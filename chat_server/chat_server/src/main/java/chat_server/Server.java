@@ -32,7 +32,6 @@ public class Server
             System.out.println("client connesso");
             connectionThread = new ServerClientConnectionThread(socket, handler);
             connectionThread.start();
-            handler.clientJoined(connectionThread);
         }
     }
 

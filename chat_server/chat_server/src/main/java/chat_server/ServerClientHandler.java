@@ -12,6 +12,7 @@ public class ServerClientHandler{
 
     public void clientJoined(ServerClientConnectionThread connectionThread){
         connectedClients.add(connectionThread);
+        sendMessageToAll("[+] "+connectionThread.getClientName()+" e' entrato nel server.");
     }
 
     public void sendMessageToAll(String msg){
@@ -20,15 +21,30 @@ public class ServerClientHandler{
         }
     }
 
-    public void sendMessageToOne(String destName, String msg){
+    public void sendMessageToAll(String msg, String senderName){
+        for(ServerClientConnectionThread thread : connectedClients){
+            if(!(thread.getClientName().equals(senderName)))
+                thread.send(senderName+": "+msg);
+        }
+    }
+
+    public void sendMessageToOne(String destName, String msg, String senderName){
         for(ServerClientConnectionThread thread : connectedClients){
             if(destName.equals(thread.getClientName()))
-                thread.send(msg);
+                thread.send("[Da "+senderName+"]: "+msg);
         }
     }
 
 
-    
+    public void clientLeft(String clientName){
+        for(ServerClientConnectionThread thread : connectedClients){
+            if(clientName.equals(thread.getClientName())){
+                thread.send("EXIT");
+                thread.closeSocket();
+                connectedClients.remove(thread);
+            }
+        }
+    }
 
 
 }
