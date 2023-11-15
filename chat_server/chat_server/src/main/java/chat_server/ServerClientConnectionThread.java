@@ -11,7 +11,7 @@ public class ServerClientConnectionThread extends Thread{
     Server server;
     BufferedReader input;
     DataOutputStream output;
-    ServerClientHandler clientHandler;
+    String clientName;
 
     public ServerClientConnectionThread(Socket socket) throws IOException{
         this.socket = socket;
@@ -21,22 +21,32 @@ public class ServerClientConnectionThread extends Thread{
 
     @Override
     public void run(){
+        String msg = "";
+
         while(true){
             try{
-                this.input.readLine();
+                send("Inserisci il tuo nome: ");
+                clientName = receive();
+                send("OK");
+                for(;;){
+                    msg = receive();
+                    if(msg != null)
+                        System.out.println(clientName+": "+msg);
+                }
+
+
             }catch(Exception e){}
-            this.clientHandler.sendMessageToAll("");
         }
     }
 
     public String receive(){
-        String msg = "";
+        
         try{
-            msg = input.readLine();
+            return input.readLine();
         }catch(IOException e){
             e.printStackTrace();
+            return "Errore";
         }
-        return msg;
     }
 
     public void send(String msg){
@@ -46,4 +56,9 @@ public class ServerClientConnectionThread extends Thread{
             e.printStackTrace();
         }
     }
+
+    public String getClientName() {
+        return clientName;
+    }
+
 }

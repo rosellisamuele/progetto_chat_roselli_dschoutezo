@@ -20,6 +20,14 @@ public class ServerClientHandler{
         }
     }
 
+    public void sendMessageToOne(String destName, String msg){
+        for(ServerClientConnectionThread thread : connectedClients){
+            if(destName.equals(thread.getClientName()))
+                thread.send(msg);
+        }
+    }
+
+
     
 
 
