@@ -13,18 +13,26 @@ public class Server
     public static  Socket socket;
     public static  int port;
     
+    //Main method
     public static void main( String[] args )
     {
+        //Calling port setup function
         port = setupPort();
 
         try{
+            //Start server
             startServer();
         }catch(IOException e){
             e.printStackTrace();
+            System.exit(1);
         }
     }
 
     public static void startServer() throws IOException{
+        //Start server
+        /*
+         * Server is online and accepts new clients
+         */
         System.out.println("Server online");
         serverSocket = new ServerSocket(port);
         for(;;){
@@ -36,6 +44,10 @@ public class Server
     }
 
     public static int setupPort(){
+        //Port setup
+        /*
+         * The hosting port is submitted from input by client
+         */
         System.out.println("Inserire la porta su cui hostare il server: ");
         Scanner portScanner = new Scanner(System.in);
         int p = portScanner.nextInt();
@@ -43,3 +55,4 @@ public class Server
         return p;
     }
 }
+
